@@ -83,9 +83,9 @@ _fonts = {}
 
 
 def font(size, w="Black"):
-    key = (int(size), w)
+    key = (max(1, int(size)), w)
     if key not in _fonts:
-        _fonts[key] = ImageFont.truetype(FONT_DIR + f"Inter-{w}.otf", int(size))
+        _fonts[key] = ImageFont.truetype(FONT_DIR + f"Inter-{w}.otf", max(1, int(size)))
     return _fonts[key]
 
 
