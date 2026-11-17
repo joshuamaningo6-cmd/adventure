@@ -82,7 +82,7 @@ A 63K-subscriber stick-figure "what if" channel that launched in Oct 2026.
 
 - Channel name picked: **Red Scarf Tales** (@RedScarfTales). Setup kit in `channel/index.html`.
 - Josh approved ~5,960 ElevenLabs credits (~US$1.08). Episode 1 narration is recorded (`audio/narration/`, model `eleven_v4`, Mike voice).
-- Episode 1 is rendered (8:11), plus two native 9:16 timelapse Shorts (day build, night siege). See README.
+- Episode 1 is rendered (6:08 after tightening to the narration — Josh disliked silent gaps and loud music), plus two native 9:16 timelapse Shorts (day build, night siege). See README.
 - Josh liked the 10 s teaser style and asked for timelapse-style Shorts.
 
 ## Ground rules

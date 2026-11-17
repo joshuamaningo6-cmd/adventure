@@ -13,7 +13,7 @@
 | `video/episode.py` | Episode 1 renderer: 21 scenes timed to the narration, plus the two 9:16 timelapse Shorts |
 | `video/soundtrack.py` | Music cues (day, golden hour, siege, sunrise), SFX timed from the choreography, ducking under the voice, subtitles |
 | `audio/narration/` | ElevenLabs "Mike" narration, one MP3 per scene (`timing.json` has the pauses) |
-| `video/out/ep01/` | `ep01_what_if_10_hours_web.mp4` (8:11, 1080p, web encode), `ep01_captions.srt`, `ep01_thumbnail.png`. The full-quality master (265 MB) is too big for GitHub and is git-ignored. |
+| `video/out/ep01/` | `ep01_what_if_10_hours_web.mp4` (6:08, 1080p, web encode), `ep01_captions.srt`, `ep01_thumbnail.png`. The full-quality master (206 MB) is too big for GitHub and is git-ignored. |
 | `video/out/shorts/` | `ep01_short1_10_hours_in_55s_9x16.mp4` (day timelapse), `ep01_short2_surviving_night_one_9x16.mp4` (night timelapse), both 1080×1920 |
 | `code/`, `reference/`, `media/` | The original handover pack |
 
