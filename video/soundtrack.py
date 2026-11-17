@@ -525,54 +525,64 @@ def episode_mix(out_wav, out_srt):
 
 
 # ------------------------------------------------------------------ shorts
-SHORT_VO = {  # (short, clip, from, to, at-seconds-into-short)
-    1: [("02", 0.0, 3.7, 3.2), ("12", 6.96, 11.47, None), ("13", 17.6, 19.72, None)],
-    2: [("14", 6.11, 12.09, 0.2), ("17", 9.28, 14.6, None), ("20", 0.0, 1.56, None), ("20", 3.13, 9.72, None)],
-}
-
-
 def short_mix(k, out_wav):
     seq, total = E.short_plan(k)
+    body = seq[-1][1]
     bus_v = Bus(total); mus = Bus(total); fx = Bus(total)
 
     def tm(n, lt):
-        for a, b, nn, s0, spd in seq:
-            if nn == n and s0 <= lt <= s0 + (b - a) * spd:
-                return a + (lt - s0) / spd
+        for s0, s1, nn, a, spd, seg in seq:
+            if nn == n and a <= lt <= a + (s1 - s0) * spd:
+                return s0 + (lt - a) / spd
         return None
-    used = sorted(set(nn for _, _, nn, _, _ in seq))
-    evs = replay(used, tm)
-    # thin out machine-gun hits in fast timelapse sections
+    used = sorted(set(x[2] for x in seq))
+    evs = replay(used, tm) + [(t, nm, g, p) for t, nm, g, p in manual_sfx_short(k, seq)]
     evs.sort(); keep = []; last = {}
-    for t, nm, g, pan in evs:
-        if nm in ("hammer", "chop", "step", "whack", "dig") and t - last.get(nm, -9) < 0.12: continue
+    for t, nm, g, pan in evs:  # thin out machine-gun hits in fast-forward parts
+        if nm in ("hammer", "chop", "step", "whack", "dig", "groan") and t - last.get(nm, -9) < 0.14: continue
         last[nm] = t; keep.append((t, nm, g * (0.6 if nm in ("hammer", "chop", "step") else 1), pan))
     for t, nm, g, pan in keep: fx.add(SFX(nm), t, g, pan)
-    # music
+    # music follows the story
+    def seg_start(n, nth=0):
+        hits = [x for x in seq if x[2] == n]
+        return hits[min(nth, len(hits) - 1)][0]
     if k == 1:
-        day_theme(mus, 0, total - 3.0, bpm=132, gain=0.7, fade_out=0.5)
-        drone(mus, total - 6.0, 6.0, 49, 0.6)
+        drone(mus, 0, 2.4, 55, 0.4)
+        t_sun = seg_start(13)
+        day_theme(mus, 2.6, t_sun + 1.0, bpm=128, gain=0.7, fade_in=0.4, fade_out=1.5)
+        drone(mus, t_sun, total - t_sun, 49, 0.7)
+        for b_ in np.arange(t_sun + 2.0, body, 0.8): fx.add(SFX("heart"), b_, 0.5)
     else:
-        siege(mus, 0, total - 9.0, 1.0)
-        day_theme(mus, total - 9.0, total, choir_on=True, gain=0.7, fade_out=1.0)
-    fx.add(SFX("hit"), total - 3.0, 0.8)
-    # narration snippets
-    for clip, a, b, at in SHORT_VO[k]:
-        sig = load_mp3(os.path.join(E.NARR, f"{clip}.mp3"))[int(a * SR):int(b * SR)]
-        if at is None:  # place where that clip's scene shows up in the short
-            n = int(clip)
-            at = next((s for s, e_, nn, s0, spd in seq if nn == n), 0) + 0.3
-            if clip == "13": at = seq[-1][0] - 0.2
-            if clip == "20" and a > 2: at += 2.0
-            if clip == "12": at += 0.2
-            if clip == "17":  # line up "Of course… it was always going to be the vine rope" right after the snap
-                sq = [x for x in seq if x[2] == 17][0]
-                ph = E.vo_phr("17"); t_snap = E.LEADS[17] + ph[3] - 0.1
-                at = sq[0] + (t_snap - sq[3]) / sq[4] + 0.35 - (ph[3] - a)
+        drone(mus, 0, seg_start(15) + 0.5, 49, 0.7)
+        t20 = seg_start(20)
+        siege(mus, seg_start(15), t20 + 0.3, 1.0)
+        drone(mus, t20, 3.5, 55, 0.6)
+        day_theme(mus, t20 + (E.LEADS[20] + 3.13) - 0.2, total, choir_on=True, gain=0.75, fade_in=1.0, fade_out=1.0)
+    fx.add(SFX("hit"), body, 0.7)
+    for clip, a, b, at in E.short_vo(k):
+        sig = load_mp3(os.path.join(E.NARR, f"{clip}.mp3"))[int(a * SR):int(b * SR)].copy()
+        fi, fo = int(0.01 * SR), int(0.06 * SR)
+        sig[:fi] *= np.linspace(0, 1, fi); sig[-fo:] *= np.linspace(1, 0, fo)
         bus_v.add(sig, at, 1.0)
     v = bus_v.st(); m = duck(mus.st(), bus_v.L, 0.8); x = fx.st()
     mix = v + m / max(1e-9, np.max(np.abs(m))) * 0.2 + x / max(1e-9, np.max(np.abs(x))) * 0.45
     write_wav(out_wav, mix[: int(total * SR)])
+
+
+def manual_sfx_short(k, seq):
+    ev = []
+    for s0, s1, n, a, spd, seg in seq:
+        if n == 1 and s0 == 0:
+            for b in np.arange(0, 2.2, 0.42): ev += [(b, "heart", 0.9, 0), (b + 0.15, "heart", 0.55, 0)]
+            ev += [(0.35, "screech", 0.7, -0.5), (1.45, "screech", 1.0, 0)]
+        if n == 14:
+            ev += [(s0 + 0.2, "shing", 0.6, -0.3)]
+        if n == 17 and seg[4] and seg[4][0] == 0.0:
+            ev += [(s0 + 0.3 + i / 1.1, "bigstep", 0.8, -0.3) for i in range(int((s1 - s0) * 1.1))]
+        if n == 20:
+            ph = E.vo_phr("20")
+            ev += [(s0 + (E.LEADS[20] + ph[2] + 0.2 + i * 0.25 - a) / spd, "crumble", 0.6, 0.5 - i * 0.1) for i in range(10)]
+    return ev
 
 
 if __name__ == "__main__":

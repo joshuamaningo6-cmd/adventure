@@ -1545,65 +1545,151 @@ def render_scene(n, out):
     ff.stdin.close(); ff.wait()
 
 
-# ================================================================ shorts (native 9:16 timelapse summaries)
-# (scene, from, to, speed) — speed > 1 is the timelapse
-SHORTS = {
-    1: dict(title="10 hours in 45 seconds", clips=[(1, 0.0, 3.6, 1.0), (4, 9.0, 20.0, 3.0), (5, 3.0, 22.0, 4.0), (6, 0.0, 25.0, 4.0), (8, 0.5, 30.0, 4.5),
-                                               (9, 4.0, 34.0, 5.0), (11, 0.0, 28.0, 5.0), (12, 0.5, 14.0, 2.5), (13, 0.0, 22.0, 4.0), (14, 8.0, 15.0, 1.4)],
-            caps=["ZOMBIES COME", "AT SUNSET.", "YOU HAVE", "10 HOURS.", "STONE AXE", "LOGS", "A CABIN", "A CRYSTAL", "SPIKES", "A TRENCH",
-                  "VINE ROPE…", "PROBABLY FINE.", "SUNSET.", "THEY'RE HERE."],
-            end="WHAT WOULD YOU BUILD FIRST?"),
-    2: dict(title="Surviving night one", clips=[(14, 7.0, 14.5, 1.6), (15, 2.0, 26.0, 3.5), (16, 3.0, 14.0, 3.0), (17, 0.0, 22.0, 2.4),
-                                                 (18, 0.0, 22.0, 2.8), (19, 0.0, 14.0, 2.4), (20, 0.0, 14.0, 1.6), (21, 0.0, 5.0, 1.0)],
-            caps=["NIGHT FALLS.", "THEY COME", "ARROWS", "THAT GLOW", "THEN…", "THE BRUTE.", "THE VINE ROPE", "SNAPPED.", "SPEAR OUT", "NO WAY OUT",
-                  "ONE BOULDER", "SUNRISE.", "NIGHT 1 SURVIVED"],
-            end="WOULD YOUR FORT SURVIVE?"),
-}
+# ================================================================ shorts (native 9:16 mini-stories)
+# Each Short is a sequence of segments: (scene, from, to, speed, vo, captions)
+#   from/to are scene-local seconds; speed > 1 is a fast-forward; vo = (a, b) seconds of that scene's narration clip
+#   (already recorded, no new credits); captions = list of words for segments without narration.
+import align as _align  # noqa: E402
+
+
+def V(n, x):
+    return LEADS[n] + x
+
+
+def _short_specs():
+    return {
+        1: dict(name="10 Hours", end=["WHAT WOULD", "YOU BUILD", "FIRST?"], segs=[
+            (1, 0.0, DURS[1], 1.0, (0.0, 4.99), None),
+            (4, V(4, 8.5), V(4, 15.0), 3.2, None, ["WHACK.", "WHACK.", "WHACK."]),
+            (4, V(4, 15.0), V(4, 19.72) + 0.3, 1.0, (15.33, 19.72), None),
+            (5, V(5, 3.2), V(5, 8.39) + 0.2, 1.0, (3.34, 8.39), None),
+            (5, V(5, 15.3), V(5, 20.61) + 0.4, 1.0, (15.45, 20.61), None),
+            (6, 0.0, DURS[6], 5.0, None, ["10 HOURS.", "BARE HANDS.", "GO."]),
+            (8, V(8, 0), V(8, 18.4), 5.5, None, ["CHOP.", "BUILD.", "REPEAT."]),
+            (11, 0.0, DURS[11], 6.0, None, ["SPIKES.", "A TRENCH."]),
+            (12, V(12, 2.84) - 0.2, V(12, 11.47) + 0.3, 1.0, (2.84, 11.47), None),
+            (13, V(13, 16.4), DURS[13], 1.0, (17.6, 19.72), None),
+            (14, V(14, 7.2), V(14, 11.67) + 0.7, 1.0, (7.36, 11.67), None)]),
+        2: dict(name="The Vine Rope", end=["WOULD YOUR", "FORT", "SURVIVE?"], segs=[
+            (14, V(14, 12.0), DURS[14], 1.0, (12.09, 16.12), None),
+            (15, V(15, 2.5), V(15, 11.5), 4.5, None, ["HERE", "THEY COME."]),
+            (15, V(15, 11.5), V(15, 17.48) + 0.2, 1.0, (11.62, 17.48), None),
+            (17, V(17, 0.0) - 0.2, V(17, 5.32) + 0.1, 1.0, (0.0, 5.32), None),
+            (17, V(17, 5.5), V(17, 14.6) + 0.4, 1.0, (5.65, 14.6), None),
+            (18, 0.0, DURS[18], 5.5, None, ["SPEAR OUT.", "DUCK.", "SPIN."]),
+            (19, V(19, 5.1), DURS[19], 1.0, (5.26, 11.81), None),
+            (20, 0.0, DURS[20], 1.0, (0.0, 9.72), None),
+            (21, V(21, 0) - 0.3, V(21, 2.19) + 0.3, 1.0, (0.0, 2.19), None),
+            (21, V(21, 7.2), V(21, 11.68) + 0.3, 1.0, (7.35, 11.68), None)]),
+    }
+
+
+SHORTS = _short_specs()
+END_CARD = 2.6
+KEYWORDS = {"VINE", "ROPE", "AXE", "BOULDER", "SUNRISE", "EYES", "BIGGER", "STICK", "ASH", "ZOMBIES", "BIG", "GATE", "HORIZON", "COUNTING", "TEN"}
 
 
 def short_plan(k):
-    sp = SHORTS[k]
-    seq = []
-    acc = 0.0
-    for n, a, b, sp_ in sp["clips"]:
-        b = min(b, DURS[n]); d = (b - a) / sp_
-        seq.append((acc, acc + d, n, a, sp_)); acc += d
-    return seq, acc + 3.0  # +3 s end card
+    """[(out_start, out_end, scene, from, speed, seg)] and total length."""
+    seq, acc = [], 0.0
+    for seg in SHORTS[k]["segs"]:
+        n, a, b, spd = seg[:4]
+        b = min(b, DURS[n]); d = (b - a) / spd
+        seq.append((acc, acc + d, n, a, spd, seg)); acc += d
+    return seq, acc + END_CARD
+
+
+def short_vo(k):
+    """Narration snippets placed in the short: [(clip, a, b, out_time)]."""
+    out = []
+    for s0, s1, n, a, spd, seg in short_plan(k)[0]:
+        if seg[4]:
+            va, vb = seg[4]
+            out.append((f"{n:02d}", va, vb, s0 + (LEADS[n] + va - a) / spd))
+    return out
+
+
+def short_captions(k):
+    """[(t0, t1, [words])] — narration words in 2–3 word chunks, plus the hand captions of silent segments."""
+    caps = []
+    for s0, s1, n, a, spd, seg in short_plan(k)[0]:
+        if seg[4]:
+            key = f"{n:02d}"; va, vb = seg[4]
+            words = [(w, ws, we) for w, ws, we in _align.align(TEXTS[key], TIMING[key]["dur"], TIMING[key]["silences"]) if ws >= va - 0.05 and ws < vb - 0.05]
+            off = s0 + (LEADS[n] - a) / spd
+            phrase = []
+            for i, wt in enumerate(words):   # phrases end at punctuation; each is split into balanced 1–3 word chunks
+                phrase.append(wt)
+                if wt[0][-1] in ".,?!…:" or i == len(words) - 1:
+                    nch = math.ceil(len(phrase) / 3)
+                    sizes = [len(phrase) // nch + (1 if j < len(phrase) % nch else 0) for j in range(nch)]
+                    p = 0
+                    for sz_ in sizes:
+                        ch = phrase[p:p + sz_]; p += sz_
+                        caps.append([off + ch[0][1], off + ch[-1][2] + 0.25, [c[0] for c in ch]])
+                    phrase = []
+        elif seg[5]:
+            n_ = len(seg[5]); d = (s1 - s0) / n_
+            for i, txt in enumerate(seg[5]):
+                caps.append([s0 + i * d, s0 + (i + 1) * d, txt.split()])
+    caps.sort(key=lambda c: c[0])
+    for i in range(len(caps) - 1):
+        caps[i][1] = min(caps[i][1], caps[i + 1][0])
+    return caps
+
+
+def draw_caption(img, words, age):
+    d = ImageDraw.Draw(img)
+    sz = 98 * pop_scale(age)
+    if sz <= 1: return
+    words = [w.upper().replace("…", "…") for w in words]
+    fnt = font(sz, "Black")
+    gap = sz * 0.28
+    widths = [d.textlength(w, font=fnt) for w in words]
+    total = sum(widths) + gap * (len(words) - 1)
+    maxw = 0.76 * W
+    if total > maxw:
+        sz *= maxw / total; fnt = font(sz, "Black"); gap = sz * 0.28
+        widths = [d.textlength(w, font=fnt) for w in words]; total = sum(widths) + gap * (len(words) - 1)
+    x = 0.46 * W - total / 2; y = 0.215 * H
+    for w, wd in zip(words, widths):
+        bare = "".join(ch for ch in w if ch.isalpha())
+        col = (255, 214, 60) if bare in KEYWORDS else (255, 255, 255)
+        d.text((x, y), w, font=fnt, fill=col, anchor="lm", stroke_width=max(2, int(sz * 0.11)), stroke_fill=(16, 14, 26))
+        x += wd + gap
+
+
+_CAPS = {}
 
 
 def short_frame(k, ts, L, sky, vig):
     seq, total = short_plan(k)
-    sp = SHORTS[k]
-    f = F()
-    for a, b, n, s0, spd in seq:
-        if ts < b or (a, b) == seq[-1][:2]:
-            lt = min(s0 + (ts - a) * spd, DURS[n] - 1e-3)
-            SCENES[n](lt, f)
-            f.badge = f"TIMELAPSE  x{round(spd)}" if spd >= 2 else None
-            break
-    f.capsz = 96
-    f.caps = []; f.title = None; f.rules = []; f.endscreen = None
-    f.big = [b_ for b_ in f.big if b_[0] in ("BRUTE", "SNAP!", "BOOM", "STONE AXE", "0:00")]
-    # captions: evenly paced 2–3 word beats across the body of the short
+    if k not in _CAPS: _CAPS[k] = short_captions(k)
     body = seq[-1][1]
-    caps = sp["caps"]
+    f = F()
+    tq = min(ts, body - 1e-3)
+    for s0, s1, n, a, spd, seg in seq:
+        if tq < s1:
+            lt = min(a + (tq - s0) * spd, DURS[n] - 1e-3)
+            SCENES[n](lt, f)
+            f.badge = "FAST FORWARD" if spd >= 3 else None
+            break
+    f.caps = []; f.title = None; f.rules = []; f.endscreen = None
+    f.big = [b_ for b_ in f.big if b_[0] in ("BRUTE", "SNAP!", "BOOM", "0:00")]
+    img = render(f, lt, L, sky, vig)
     if ts < body:
-        i = min(len(caps) - 1, int(ts / body * len(caps)))
-        a = i * body / len(caps)
-        f.caps = [(caps[i], ts - a)]
-    img = render(f, lt if ts < body else DURS[seq[-1][2]] - 0.01, L, sky, vig)
-    if ts >= body:
-        d = ImageDraw.Draw(img)
+        for c0, c1, words in _CAPS[k]:
+            if c0 <= ts < c1: draw_caption(img, words, ts - c0)
+    else:
         age = ts - body
         a = ease(age / 0.4)
-        ov = Image.new("RGBA", (W, H), (10, 12, 30, int(150 * a)))
+        ov = Image.new("RGBA", (W, H), (10, 12, 30, int(160 * a)))
         img = Image.alpha_composite(img.convert("RGBA"), ov).convert("RGB"); d = ImageDraw.Draw(img)
-        words = sp["end"].split()
-        lines = [" ".join(words[:2]), " ".join(words[2:4]), " ".join(words[4:])]
-        for j, ln in enumerate([l for l in lines if l]):
-            text_c(d, (0.46 * W, 0.3 * H + j * 120), ln, 104 * pop_scale(age - 0.1 * j), fill=(255, 255, 255) if j < 2 else (110, 255, 110), sw=10)
-        if age > 0.8:
-            text_c(d, (0.46 * W, 0.3 * H + 3 * 120 + 30), "Full episode on the channel", 44 * pop_scale(age - 0.8), weight="ExtraBold", sw=5)
+        for j, ln in enumerate(SHORTS[k]["end"]):
+            sc = pop_scale(age - 0.12 * j)
+            if sc > 0: text_c(d, (0.46 * W, 0.3 * H + j * 125), ln, 108 * sc, fill=(255, 255, 255) if j < 2 else (110, 255, 110), sw=11)
+        if age > 0.9:
+            text_c(d, (0.46 * W, 0.3 * H + 3 * 125 + 30), "Comment below", 50 * pop_scale(age - 0.9), weight="ExtraBold", sw=5)
     return img
 
 
