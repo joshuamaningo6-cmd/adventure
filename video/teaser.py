@@ -454,13 +454,18 @@ def limb(d, pts, w, col=INK):
         d.ellipse([S(x - w / 2), S(y - w / 2), S(x + w / 2), S(y + w / 2)], fill=col)
 
 
-def hero(d, e, glows, x, y, h, pose, dir, t, ph=0.0, swing=0.0, tool=None, night=0.0, flow=None):
-    """Red-scarf stick hero. y = feet. d = lit canvas, e = emissive canvas (may be None)."""
+def hero(d, e, glows, x, y, h, pose, dir, t, ph=0.0, swing=0.0, tool=None, night=0.0, flow=None, shield=False, pads=0):
+    """Red-scarf stick hero. y = feet. d = lit canvas, e = emissive canvas (may be None).
+    poses: run dash walk jump idle hammer chop spear sit pull shrug aim thrust cheer crouch
+    tools: hammer axe spear stick halfstick rock crystal bow   shield: wooden shield on back arm   pads: 1 armour, 2 cracked"""
     run = pose in ("run", "dash")
-    lean = 0.32 if run else (0.12 if pose in ("hammer", "chop") else 0.03)
-    bob = -abs(math.sin(ph)) * 0.04 * h if run else (math.sin(t * 3) * 0.006 * h)
+    walk = pose == "walk"
+    lean = {"run": 0.32, "dash": 0.32, "walk": 0.1, "hammer": 0.12, "chop": 0.12, "pull": -0.28, "thrust": 0.3, "crouch": 0.5, "aim": 0.0}.get(pose, 0.03)
+    bob = -abs(math.sin(ph)) * 0.04 * h if run else (-abs(math.sin(ph)) * 0.015 * h if walk else math.sin(t * 3) * 0.006 * h)
     hip = (x, y - 0.43 * h + bob)
     if pose == "jump": hip = (x, y - 0.40 * h)
+    if pose == "sit": hip = (x, y - 0.2 * h)
+    if pose == "crouch": hip = (x, y - 0.3 * h)
     sho = (hip[0] + math.sin(lean) * 0.27 * h * dir, hip[1] - math.cos(lean) * 0.27 * h)
     head = (sho[0] + math.sin(lean) * 0.165 * h * dir, sho[1] - math.cos(lean) * 0.165 * h)
     neck = (sho[0] + math.sin(lean) * 0.03 * h * dir, sho[1] - 0.03 * h)
@@ -480,9 +485,18 @@ def hero(d, e, glows, x, y, h, pose, dir, t, ph=0.0, swing=0.0, tool=None, night
     if run:
         legs = [leg(0.9 * math.sin(ph + k), 0.2 + 1.5 * max(0, math.cos(ph + k))) for k in (math.pi, 0)]
         arms = [arm(-0.95 * math.sin(ph + k), 1.4) for k in (0, math.pi)]
+    elif walk:
+        legs = [leg(0.45 * math.sin(ph + k), 0.15 + 0.6 * max(0, math.cos(ph + k))) for k in (math.pi, 0)]
+        arms = [arm(-0.4 * math.sin(ph + k), 0.3) for k in (0, math.pi)]
     elif pose == "jump":
         legs = [leg(-0.3, 1.2), leg(0.7, 1.6)]
         arms = [arm(-2.4, 0.4), arm(2.6, 0.3)]
+    elif pose == "sit":
+        legs = [leg(1.45, 1.55), leg(1.6, 1.6)]
+        arms = [arm(0.5, 0.9), arm(0.7, 0.8)]
+    elif pose == "crouch":
+        legs = [leg(0.2, 1.9), leg(1.1, 2.2)]
+        arms = [arm(1.0, 0.6), arm(1.3, 0.2)]
     else:
         legs = [leg(-0.16, 0.06), leg(0.16, 0.1)]
         if pose in ("hammer", "chop"):
@@ -491,6 +505,21 @@ def hero(d, e, glows, x, y, h, pose, dir, t, ph=0.0, swing=0.0, tool=None, night
             arms = [arm(0.5, 0.7), arm(a, 0.25)]
         elif pose == "spear":
             arms = [arm(0.25, 0.5), arm(0.75, -1.65)]
+        elif pose == "pull":
+            legs = [leg(-0.45, 0.1), leg(0.35, 0.3)]
+            arms = [arm(1.35, 0.15), arm(1.5, 0.05)]
+        elif pose == "shrug":
+            arms = [arm(0.55, -2.3), arm(-0.55, 2.3)]
+        elif pose == "aim":
+            legs = [leg(-0.3, 0.05), leg(0.3, 0.1)]
+            arms = [arm(1.25, -2.6), arm(1.57, 0.0)]
+        elif pose == "thrust":
+            legs = [leg(-0.55, 0.1), leg(0.6, 0.5)]
+            k = swing % 1.0
+            reach = math.sin(min(k / 0.5, 1) * math.pi / 2) if k < 0.5 else 1 - (k - 0.5) / 0.5
+            arms = [arm(1.1, 0.3), arm(1.0 + 0.55 * reach, 0.9 - 0.9 * reach)]
+        elif pose == "cheer":
+            arms = [arm(2.7, 0.2), arm(-2.8, -0.2)]
         else:
             arms = [arm(0.18, 0.25), arm(-0.12, 0.35)]
 
@@ -511,8 +540,25 @@ def hero(d, e, glows, x, y, h, pose, dir, t, ph=0.0, swing=0.0, tool=None, night
             top.append((S(cx), S(cy - wd))); bot.append((S(cx), S(cy + wd)))
         sc_c.polygon(top + bot[::-1], fill=col)
     limb(d, legs[0], lw); limb(d, arms[0], lw * 0.9)
+    if shield:
+        bh = arms[0][2]; sr = 0.13 * h
+        d.ellipse([S(bh[0] - sr), S(bh[1] - sr), S(bh[0] + sr), S(bh[1] + sr)], fill=(96, 62, 38, 255))
+        d.ellipse([S(bh[0] - sr * .82), S(bh[1] - sr * .82), S(bh[0] + sr * .82), S(bh[1] + sr * .82)], fill=(150, 104, 62, 255))
+        for k in (-0.35, 0.0, 0.35):
+            d.line([S(bh[0] + k * sr), S(bh[1] - sr * .78), S(bh[0] + k * sr), S(bh[1] + sr * .78)], fill=(112, 76, 46, 255), width=max(1, int(S(0.012 * h))))
+        d.ellipse([S(bh[0] - sr * .18), S(bh[1] - sr * .18), S(bh[0] + sr * .18), S(bh[1] + sr * .18)], fill=(140, 140, 150, 255))
     limb(d, [hip, sho], lw * 1.15)
     limb(d, legs[1], lw)
+    if pads:
+        pc = (150, 150, 160, 255) if pads == 1 else (110, 108, 116, 255)
+        for lg in legs:
+            kx, ky = lg[1]; fx, fy = lg[2]
+            mx, my = (kx * .45 + fx * .55), (ky * .45 + fy * .55)
+            d.rounded_rectangle([S(mx - 0.04 * h), S(my - 0.05 * h), S(mx + 0.04 * h), S(my + 0.05 * h)], radius=S(0.015 * h), fill=pc)
+        cx_, cy_ = (sho[0] + hip[0]) / 2, (sho[1] + hip[1]) / 2
+        d.rounded_rectangle([S(cx_ - 0.06 * h), S(cy_ - 0.08 * h), S(cx_ + 0.06 * h), S(cy_ + 0.06 * h)], radius=S(0.02 * h), fill=(122, 86, 56, 255))
+        if pads == 2:
+            d.line([S(cx_ - 0.05 * h), S(cy_ - 0.06 * h), S(cx_ + 0.01 * h), S(cy_), S(cx_ - 0.02 * h), S(cy_ + 0.05 * h)], fill=(30, 20, 14, 255), width=max(1, int(S(0.012 * h))))
     # scarf knot
     sc_c.rounded_rectangle([S(neck[0] - 0.075 * h), S(neck[1] - 0.03 * h), S(neck[0] + 0.075 * h), S(neck[1] + 0.035 * h)],
                         radius=S(0.03 * h), fill=cS)
@@ -539,7 +585,32 @@ def hero(d, e, glows, x, y, h, pose, dir, t, ph=0.0, swing=0.0, tool=None, night
                    (S(tip[0] + px * hw), S(tip[1] + py * hw)),
                    (S(tip[0] + px * hw + math.cos(a) * 0.05 * h), S(tip[1] + py * hw + math.sin(a) * 0.05 * h)),
                    (S(tip[0] - px * hw * .4 + math.cos(a) * 0.04 * h), S(tip[1] - py * hw * .4 + math.sin(a) * 0.04 * h))], fill=col)
+    if tool in ("stick", "halfstick"):
+        a = math.atan2(arms[1][2][1] - arms[1][1][1], arms[1][2][0] - arms[1][1][0])
+        L = (0.36 if tool == "stick" else 0.14) * h
+        d.line([S(hand[0] - math.cos(a) * 0.04 * h), S(hand[1] - math.sin(a) * 0.04 * h), S(hand[0] + math.cos(a) * L), S(hand[1] + math.sin(a) * L)],
+               fill=(126, 88, 52, 255), width=int(S(0.026 * h)))
+    if tool == "bow":
+        bx, by = hand
+        pts = [(bx + dir * 0.09 * h * math.cos(u), by + 0.27 * h * math.sin(u)) for u in [i / 10 * math.pi - math.pi / 2 for i in range(11)]]
+        d.line([(S(px), S(py)) for px, py in pts], fill=(110, 72, 40, 255), width=int(S(0.022 * h)), joint="curve")
+        bk = arms[0][2]
+        d.line([S(pts[0][0]), S(pts[0][1]), S(bk[0]), S(bk[1]), S(pts[-1][0]), S(pts[-1][1])], fill=(230, 230, 220, 255), width=max(1, int(S(0.006 * h))))
     limb(d, arms[1], lw * 0.9)
+    if tool == "rock":
+        d.ellipse([S(hand[0] - 0.045 * h), S(hand[1] - 0.04 * h), S(hand[0] + 0.045 * h), S(hand[1] + 0.04 * h)], fill=(140, 142, 146, 255))
+    if tool == "crystal":
+        tip = [(hand[0], hand[1] - 0.11 * h), (hand[0] + 0.035 * h, hand[1] - 0.04 * h), (hand[0], hand[1] + 0.01 * h), (hand[0] - 0.035 * h, hand[1] - 0.04 * h)]
+        (e or d).polygon([(S(a), S(b)) for a, b in tip], fill=(150, 246, 255, 255))
+        glows.append((hand[0], hand[1] - 0.05 * h, 0.35 * h, (90, 220, 255), 1.1))
+    if tool == "hspear" or (tool == "spear" and pose == "thrust"):
+        bx, by = hand[0] - dir * 0.3 * h, hand[1]
+        tx = hand[0] + dir * 0.55 * h
+        d.line([S(bx), S(by), S(tx), S(by)], fill=(122, 82, 50, 255), width=int(S(0.028 * h)))
+        tip = [(tx + dir * 0.13 * h, by), (tx + dir * 0.03 * h, by - 0.035 * h), (tx - dir * 0.02 * h, by), (tx + dir * 0.03 * h, by + 0.035 * h)]
+        (e or d).polygon([(S(a), S(b)) for a, b in tip], fill=(150, 246, 255, 255))
+        glows.append((tx + dir * 0.05 * h, by, 0.22 * h, (90, 220, 255), 0.9))
+        return head
     if tool == "spear":
         top_y, bot_y = hand[1] - 0.62 * h, hand[1] + 0.34 * h
         d.line([S(hand[0]), S(bot_y), S(hand[0]), S(top_y)], fill=(122, 82, 50, 255), width=int(S(0.028 * h)))

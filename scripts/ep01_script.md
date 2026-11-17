@@ -4,7 +4,7 @@
 **Narrator:** ElevenLabs "Mike – 2D & 3D POV/Storytime YT Voice" (`zfc8CJQpe8Kqyl0vvCzo`), model `eleven_v4`
 **Narration:** 940 words, about 6.5 min at 145 wpm. The rest of the runtime is silent action and music.
 
-This is the recording script. Lines in `[brackets]` are ElevenLabs v4 direction tags. They go into the TTS input as written. `<break time="0.6s"/>` adds a pause. Paste one block per scene, so each scene becomes its own audio file and is easy to re-time in the edit. The full shot-by-shot production table (visuals, SFX, music cues) is still in `../script_ep01.md`.
+This is the recording script. Lines in `[brackets]` are ElevenLabs v4 direction tags. They go into the TTS input as written. `[pause]` adds a pause. Paste one block per scene, so each scene becomes its own audio file and is easy to re-time in the edit. The full shot-by-shot production table (visuals, SFX, music cues) is still in `../script_ep01.md`.
 
 ---
 
@@ -13,9 +13,9 @@ This is the recording script. Lines in `[brackets]` are ElevenLabs v4 direction 
 *Visual:* night chase, zombies burst from the bushes, one leaps at the camera, freeze, tape rewind, the sky flips to day.
 
 ```text
-[deadpan] Okay. <break time="0.4s"/> Let's back up.
-<break time="0.8s"/>
-[matter-of-fact] Ten hours earlier.
+[sarcastic] Okay. [short pause] Let's back up.
+[pause]
+ Ten hours earlier.
 ```
 
 ## 02 · Premise (0:06–0:18)
@@ -23,7 +23,7 @@ This is the recording script. Lines in `[brackets]` are ElevenLabs v4 direction 
 *Visual:* title card over the meadow. Three rule icons pop in: sun → moon with eyes, empty hands, a floating island out of reach.
 
 ```text
-[warm, storytelling] What if you woke up in a world where zombies only come out at night… <break time="0.3s"/> and you had exactly ten hours, with nothing but your bare hands, <break time="0.2s"/> to build a home they can't get into?
+[warmly] What if you woke up in a world where zombies only come out at night… [short pause] and you had exactly ten hours, with nothing but your bare hands, [short pause] to build a home they can't get into?
 ```
 
 ## 03 · The rules (0:18–0:30)
@@ -31,8 +31,8 @@ This is the recording script. Lines in `[brackets]` are ElevenLabs v4 direction 
 *Visual:* sundial shadow. The sun timer appears top-left at 10:00.
 
 ```text
-Rule one: the sun keeps time. <break time="0.3s"/> Rule two: everything you need is somewhere in this meadow. <break time="0.3s"/> Rule three: [slower] when the sun touches the horizon… <break time="0.4s"/> they come.
-[upbeat] Let's see what you can build.
+Rule one: the sun keeps time. [short pause] Rule two: everything you need is somewhere in this meadow. [short pause] Rule three: [slowly] when the sun touches the horizon… [short pause] they come.
+[happy] Let's see what you can build.
 ```
 
 ## 04 · No tools (0:30–0:50)
@@ -40,9 +40,9 @@ Rule one: the sun keeps time. <break time="0.3s"/> Rule two: everything you need
 *Visual:* he whacks a tree with a stick, and the stick snaps.
 
 ```text
-[playful] First problem: you can't build anything without tools. You look around. Trees, grass, rocks, more grass. So you grab the best tool in the whole meadow, a nice sturdy stick, and give that tree everything you've got.
-<break time="0.5s"/>
-[deadpan] And now your only tool is… <break time="0.3s"/> was… <break time="0.3s"/> a stick.
+[mischievously] First problem: you can't build anything without tools. You look around. Trees, grass, rocks, more grass. So you grab the best tool in the whole meadow, a nice sturdy stick, and give that tree everything you've got.
+[pause]
+[sarcastic] And now your only tool is… [short pause] was… [short pause] a stick.
 ```
 
 ## 05 · The rock hits back (0:50–1:10)
@@ -50,8 +50,8 @@ Rule one: the sun keeps time. <break time="0.3s"/> Rule two: everything you need
 *Visual:* rock on rock, his whole body vibrates. The fourth try splits it. Icon: **STONE AXE**.
 
 ```text
-So you do what every survivor in history has done. You hit a rock with a rock. <break time="0.3s"/> [laughs] The rock… hits back. Your teeth are still buzzing.
-But on the fourth try it splits, and suddenly you're holding a sharp edge. Tie it to a branch with some vine, and [proud] congratulations: you've invented the axe.
+So you do what every survivor in history has done. You hit a rock with a rock. [short pause] [laughs] The rock… hits back. Your teeth are still buzzing.
+But on the fourth try it splits, and suddenly you're holding a sharp edge. Tie it to a branch with some vine, and [excited] congratulations: you've invented the axe.
 ```
 
 ## 06 · Gear (1:10–1:35)
@@ -59,8 +59,8 @@ But on the fourth try it splits, and suddenly you're holding a sharp edge. Tie i
 *Visual:* chopping montage, then the lopsided shield. Icon: **WOODEN SHIELD**. Timer 8:00.
 
 ```text
-[energetic] With an axe, a tree takes minutes, not hours. One tree, two trees, five. Every log is a wall, a beam, a spike for later.
-And while you're at it, a wooden shield. Is it good? <break time="0.2s"/> No. <break time="0.2s"/> Is it better than nothing? <break time="0.2s"/> Absolutely.
+[excited] With an axe, a tree takes minutes, not hours. One tree, two trees, five. Every log is a wall, a beam, a spike for later.
+And while you're at it, a wooden shield. Is it good? [short pause] No. [short pause] Is it better than nothing? [short pause] Absolutely.
 Two hours down, and you've got gear.
 ```
 
@@ -69,7 +69,7 @@ Two hours down, and you've got gear.
 *Visual:* red X on the open field, tall grass and under a tree. Green tick on the hill backed by mossy boulders.
 
 ```text
-[leaning in] Here's what nobody tells you: where you build matters more than what you build.
+[curious] Here's what nobody tells you: where you build matters more than what you build.
 Tall grass hides them until they're on top of you. Open fields mean they come from every direction. But a little hill with giant boulders at your back? They can only come from one side, and from up here, you'll see them coming.
 ```
 
@@ -78,8 +78,8 @@ Tall grass hides them until they're on top of you. Open fields mean they come fr
 *Visual:* sped-up build on the beat. Icon: **CABIN**. Timer 6:00.
 
 ```text
-[brisk] Foundation first, made of stone, so nothing digs underneath. Then the frame: four corner posts, buried deep. Then the walls, log by log, gaps packed with mud. Then a proper roof, because if every zombie movie has taught you anything, it's never sleep somewhere they can drop in.
-[softer] Four hours in, and for the first time, you have somewhere that's yours.
+[excited] Foundation first, made of stone, so nothing digs underneath. Then the frame: four corner posts, buried deep. Then the walls, log by log, gaps packed with mud. Then a proper roof, because if every zombie movie has taught you anything, it's never sleep somewhere they can drop in.
+[softly] Four hours in, and for the first time, you have somewhere that's yours.
 ```
 
 ## 09 · The crystal (2:35–3:15)
@@ -87,9 +87,9 @@ Tall grass hides them until they're on top of you. Open fields mean they come fr
 *Visual:* a cyan glow leaks from a crack in the boulder. Crystal spear and armour pads. Icons: **CRYSTAL SPEAR**, **ARMOR PADS**.
 
 ```text
-You need more stone, so you start chipping at the boulders. [awed, quieter] And that's when you find it. A crack, and something glowing inside. A crystal that shines on its own.
-In a world where the monsters come out in the dark, a light that never runs out isn't treasure. <break time="0.3s"/> It's a weapon.
-[upbeat] Lash a shard to a long pole: crystal spear. Strap leather and scrap metal to your arms and legs: armour. It's ugly. It squeaks. [fond] You love it.
+You need more stone, so you start chipping at the boulders. [softly] [curious] And that's when you find it. A crack, and something glowing inside. A crystal that shines on its own.
+In a world where the monsters come out in the dark, a light that never runs out isn't treasure. [short pause] It's a weapon.
+[happy] Lash a shard to a long pole: crystal spear. Strap leather and scrap metal to your arms and legs: armour. It's ugly. It squeaks. [warmly] You love it.
 ```
 
 ## 10 · The mistake (3:15–3:50)
@@ -97,8 +97,8 @@ In a world where the monsters come out in the dark, a light that never runs out 
 *Visual:* he sits on a log. The camera pulls back to show how exposed the cabin is. Timer 3:00.
 
 ```text
-[relaxed] Seven hours gone. You've got a house, a spear and armour. Honestly? You're feeling pretty good. You even have time to sit down.
-[serious] But look around. A house isn't a fortress. There's nothing between those walls and the open meadow. And when the sun goes down, you're going to find out about the one thing you got wrong.
+[happy] Seven hours gone. You've got a house, a spear and armour. Honestly? You're feeling pretty good. You even have time to sit down.
+[dramatically] But look around. A house isn't a fortress. There's nothing between those walls and the open meadow. And when the sun goes down, you're going to find out about the one thing you got wrong.
 ```
 
 ## 11 · Spikes and trench (3:50–4:20)
@@ -106,7 +106,7 @@ In a world where the monsters come out in the dark, a light that never runs out 
 *Visual:* golden light, a ring of sharpened stakes, then the trench. Icon: **SPIKE WALL**.
 
 ```text
-[determined] Step one of turning a house into a fortress: make it hurt to touch. You sharpen every log you have left and hammer them in a ring around the cabin, every single point facing out. Anything that wants in has to go through them.
+[dramatically] Step one of turning a house into a fortress: make it hurt to touch. You sharpen every log you have left and hammer them in a ring around the cabin, every single point facing out. Anything that wants in has to go through them.
 Then a trench, outside the spikes. It won't stop them, but it slows them down. And slow zombies are zombies you can count.
 ```
 
@@ -115,7 +115,7 @@ Then a trench, outside the spikes. It won't stop them, but it slows them down. A
 *Visual:* drawbridge, tied off with twisted vine. He tugs it twice and shrugs. Icon: **DRAWBRIDGE**.
 
 ```text
-You still need a way in and out, so: a drawbridge over the trench, held up with rope. <break time="0.3s"/> Well. Vine rope. <break time="0.3s"/> You give it a tug. It'll hold. <break time="0.6s"/> [unconvinced] …Probably.
+You still need a way in and out, so: a drawbridge over the trench, held up with rope. [short pause] Well. Vine rope. [short pause] You give it a tug. It'll hold. [pause] [sarcastic] …Probably.
 ```
 
 ## 13 · Lookout and the boulder (4:34–5:00)
@@ -125,8 +125,8 @@ You still need a way in and out, so: a drawbridge over the trench, held up with 
 ```text
 Up on the roof: a lookout, and arrows tipped with that glowing crystal. Every shot is a flare, and every flare shows you where they are.
 And one last thing: a boulder hanging over your front door, for when every other plan fails. You really hope you never need it.
-<break time="0.8s"/>
-[quiet] Then the sun touches the horizon.
+[pause]
+[softly] Then the sun touches the horizon.
 ```
 
 ## 14 · Eyes in the dark (5:00–5:25)
@@ -134,10 +134,10 @@ And one last thing: a boulder hanging over your front door, for when every other
 *Visual:* deep navy, silence. One pair of orange eyes, then five, then dozens.
 
 ```text
-[whispering] The music stops. Even the bugs go quiet. You hold your breath and listen. <break time="0.6s"/> Nothing.
-<break time="0.6s"/>
-[whispering] Then one pair of eyes. <break time="0.4s"/> Then ten. <break time="0.4s"/> Then you stop counting.
-[low, tense] They don't run. They don't need to. They know you're not going anywhere.
+[whispers] The music stops. Even the bugs go quiet. You hold your breath and listen. [pause] Nothing.
+[pause]
+[whispers] Then one pair of eyes. [short pause] Then ten. [short pause] Then you stop counting.
+[nervous] They don't run. They don't need to. They know you're not going anywhere.
 ```
 
 ## 15 · First wave (5:25–5:55)
@@ -145,16 +145,16 @@ And one last thing: a boulder hanging over your front door, for when every other
 *Visual:* zombies tumble into the trench and onto the spikes. Each crystal arrow flashes as it hits.
 
 ```text
-[tense, building] The first ones hit the trench and tumble in. The ones behind climb right over them, straight into the spikes. And every crystal arrow lights up the dark for a heartbeat, so you know exactly where they are.
-One. <break time="0.2s"/> Two. <break time="0.2s"/> Five. [relieved] The walls are holding. Everything you built today is working.
+[nervous] The first ones hit the trench and tumble in. The ones behind climb right over them, straight into the spikes. And every crystal arrow lights up the dark for a heartbeat, so you know exactly where they are.
+One. [short pause] Two. [short pause] Five. [happy] The walls are holding. Everything you built today is working.
 ```
 
 ## 16 · The ground shakes (5:55–6:10)
 
 ```text
-[calmer] Then, just like that, they pull back. For a moment, you actually think you've won.
-<break time="0.5s"/>
-[uneasy] And then the pebbles on the roof start to bounce. <break time="0.3s"/> The ground is shaking.
+[softly] Then, just like that, they pull back. For a moment, you actually think you've won.
+[pause]
+[cautiously] And then the pebbles on the roof start to bounce. [short pause] The ground is shaking.
 ```
 
 ## 17 · The Brute (6:10–6:35)
@@ -162,22 +162,22 @@ One. <break time="0.2s"/> Two. <break time="0.2s"/> Five. [relieved] The walls a
 *Visual:* the Brute wades through the trench and smashes the gate. The vine rope snaps. Text: **BRUTE**.
 
 ```text
-[urgent] Something big is coming. It doesn't stop at the trench. It doesn't care about the spikes. It goes straight for the gate.
-And the drawbridge rope… <break time="0.4s"/> [resigned] the vine rope. <break time="0.3s"/> Of course. <break time="0.3s"/> It was always going to be the vine rope.
+[nervous] Something big is coming. It doesn't stop at the trench. It doesn't care about the spikes. It goes straight for the gate.
+And the drawbridge rope… [short pause] [sighs] the vine rope. [short pause] Of course. [short pause] It was always going to be the vine rope.
 ```
 
 ## 18 · Close combat (6:35–7:05)
 
 ```text
-[fast, intense] They're inside. No more arrows. Spear out. You jump down, off the wall, duck, spin, back to the doorway, because if they get through that door, it's over.
+[excited] They're inside. No more arrows. Spear out. You jump down, off the wall, duck, spin, back to the doorway, because if they get through that door, it's over.
 One of them lands a hit, and that armour you almost didn't bother making? [breathless] It just saved your life.
 ```
 
 ## 19 · Last resort (7:05–7:20)
 
 ```text
-[strained] But there are too many. Back up the ladder, onto the roof. Nowhere left to run.
-[slow, deliberate] The big one is right below you, at the front door. <break time="0.4s"/> Just one rope… <break time="0.4s"/> and one boulder.
+[breathless] But there are too many. Back up the ladder, onto the roof. Nowhere left to run.
+[slowly] The big one is right below you, at the front door. [short pause] Just one rope… [short pause] and one boulder.
 ```
 
 ## 20 · Sunrise (7:20–7:35)
@@ -185,9 +185,9 @@ One of them lands a hit, and that armour you almost didn't bother making? [breat
 *Visual:* slow-motion boulder drop, then gold sunrise rays turn every zombie to ash.
 
 ```text
-[cocky] Goodbye, big guy.
-<break time="1.2s"/>
-[triumphant] And right on cue… <break time="0.3s"/> sunrise. Every one of them the light touches crumbles into ash.
+[mischievously] Goodbye, big guy.
+[long pause]
+[excited] And right on cue… [short pause] sunrise. Every one of them the light touches crumbles into ash.
 ```
 
 ## 21 · Outro (7:35–8:00)
@@ -195,10 +195,10 @@ One of them lands a hit, and that armour you almost didn't bother making? [breat
 *Visual:* morning on the battered roof, scarf in the breeze. Text: **NIGHT 1 SURVIVED**. End screen.
 
 ```text
-[tired, warm] You made it. One night. The gate is gone, your spear is chipped, and you can't feel your arms.
-[ominous] But the sun is already moving again, and tonight, they'll come back bigger.
-<break time="0.6s"/>
-[friendly, to camera] So, what would you build first? Tell me in the comments. And if you want to see night two… you know what to do.
+[tired] You made it. One night. The gate is gone, your spear is chipped, and you can't feel your arms.
+[dramatically] But the sun is already moving again, and tonight, they'll come back bigger.
+[pause]
+[warmly] So, what would you build first? Tell me in the comments. And if you want to see night two… you know what to do.
 ```
 
 ---
