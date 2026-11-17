@@ -1634,6 +1634,47 @@ def main():
         for i, im in enumerate(ims): sheet.paste(im, ((i % cols) * (W // 3), (i // cols) * (H // 3)))
         sheet.save(os.path.join(outd, os.environ.get("SHEET", "sheet.png")))
         return
+    if cmd == "thumb":  # YouTube thumbnail 1280x720: split day/night, "10 HOURS TO BUILD"
+        L, sky, vig = build_layers()
+        def spec(n, t, **kw):
+            f = F(); SCENES[n](t, f)
+            f.timer = None; f.badge = None; f.icons = []; f.big = []; f.caps = []; f.zoom = 1.0
+            for k, v in kw.items(): setattr(f, k, v)
+            return render(f, t, L, sky, vig)
+        day = spec(8, 14.0); night = spec(14, 22.0)
+        box = (CX - 1.3 * CW, GY - 1.75 * CW, CX + 1.3 * CW, GY + 0.35 * CW)   # tight on the fort
+        bw, bh = box[2] - box[0], box[3] - box[1]
+        box = (box[0], box[3] - bw * 9 / 16, box[2], box[3]) if bw * 9 / 16 > bh else box
+        day = day.crop(tuple(int(v) for v in box)).resize((1280, 720), Image.LANCZOS)
+        night = night.crop(tuple(int(v) for v in box)).resize((1280, 720), Image.LANCZOS)
+        m = Image.new("L", (1280, 720), 0); ImageDraw.Draw(m).polygon([(700, 0), (1280, 0), (1280, 720), (580, 720)], fill=255)
+        img = day.copy(); img.paste(night, (0, 0), m)
+        from PIL import ImageFilter
+        # glowing eyes in the night bushes
+        gl = Image.new("RGB", (1280, 720), (0, 0, 0)); gd = ImageDraw.Draw(gl)
+        ey = Image.new("RGBA", (1280 * 2, 720 * 2), (0, 0, 0, 0)); ed = ImageDraw.Draw(ey)
+        r = random.Random(4)
+        for i in range(16):
+            x, y = r.uniform(840, 1250), r.uniform(430, 640); s_ = r.uniform(7, 12)
+            gd.ellipse([x - 40, y - 25, x + 40, y + 25], fill=(255, 110, 20))
+            for k in (-1, 1):
+                ex = x + k * s_ * 1.0
+                ed.polygon([(2 * (ex - s_ * .7), 2 * (y - k * .35 * s_ - s_ * .25)), (2 * (ex + s_ * .7), 2 * (y + k * .35 * s_ - s_ * .45)),
+                            (2 * (ex + s_ * .5), 2 * (y + k * .35 * s_ + s_ * .35)), (2 * (ex - s_ * .6), 2 * (y - k * .35 * s_ + s_ * .4))], fill=(255, 175, 60, 255))
+        gl = gl.filter(ImageFilter.GaussianBlur(22))
+        img = Image.fromarray(np.clip(np.asarray(img, np.float32) + np.asarray(gl, np.float32) * 0.8, 0, 255).astype(np.uint8))
+        img = img.convert("RGBA"); img.alpha_composite(ey.reduce(2))
+        # big hero in the middle, hammer raised
+        hc = Image.new("RGBA", (1280 * 2, 720 * 2), (0, 0, 0, 0)); hd = ImageDraw.Draw(hc)
+        hero(hd, None, [], 640, 735, 470, "hammer", 1, 0.4, swing=0.35, tool="hammer", flow=1.0)
+        sh = Image.new("RGBA", hc.size, (0, 0, 0, 0)); sh.paste((255, 255, 255, 255), (0, 0), hc.split()[3].filter(ImageFilter.MaxFilter(13)))
+        img.alpha_composite(sh.reduce(2)); img.alpha_composite(hc.reduce(2))
+        img = img.convert("RGB")
+        d = ImageDraw.Draw(img)
+        d.line([(700, 0), (580, 720)], fill=(255, 255, 255), width=8)
+        text_c(d, (640, 92), "10 HOURS", 150, fill=(255, 255, 255), sw=14)
+        text_c(d, (640, 212), "TO BUILD", 104, fill=(110, 255, 110), sw=12)
+        img.save(sys.argv[3]); return
     if cmd == "scene":
         render_scene(int(sys.argv[3]), sys.argv[4]); return
     if cmd == "spreview":

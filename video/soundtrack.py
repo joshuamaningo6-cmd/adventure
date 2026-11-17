@@ -461,6 +461,8 @@ def subtitles(path):
             a = at(acc / ct); acc += c; b = at(acc / ct)
             # split long sentences into two caption lines
             cues.append((t0s + a, t0s + b + 0.15, s))
+    cues.sort()
+    cues = [(a, min(b, cues[i + 1][0] - 0.02) if i + 1 < len(cues) else b, s) for i, (a, b, s) in enumerate(cues)]
     with open(path, "w") as fh:
         for i, (a, b, s) in enumerate(cues, 1):
             fh.write(f"{i}\n{srt_time(a)} --> {srt_time(b)}\n{s}\n\n")
@@ -479,7 +481,8 @@ def write_wav(path, st):
 def duck(music, vo_mono, depth=0.6):
     env = np.abs(vo_mono)
     k = int(0.25 * SR)
-    env = np.convolve(env, np.ones(k) / k, "same")
+    c = np.cumsum(np.concatenate([np.zeros(k), env, np.zeros(k)]))
+    env = (c[k + k // 2:k + k // 2 + len(env)] - c[k // 2:k // 2 + len(env)]) / k   # running mean (fast)
     env = np.clip(env / (np.percentile(env[env > 1e-4], 70) if np.any(env > 1e-4) else 1), 0, 1)
     return music * (1 - depth * env)[:, None]
 
