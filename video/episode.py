@@ -1572,7 +1572,7 @@ def short_frame(k, ts, L, sky, vig):
             break
     f.capsz = 96
     f.caps = []; f.title = None; f.rules = []; f.endscreen = None
-    f.big = [b_ for b_ in f.big if b_[0] in ("BRUTE", "SNAP!", "BOOM", "STONE AXE", "0:00", "NIGHT 1 SURVIVED")]
+    f.big = [b_ for b_ in f.big if b_[0] in ("BRUTE", "SNAP!", "BOOM", "STONE AXE", "0:00")]
     # captions: evenly paced 2–3 word beats across the body of the short
     body = seq[-1][1]
     caps = sp["caps"]
