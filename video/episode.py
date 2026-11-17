@@ -450,13 +450,24 @@ def vo_phr(n):
 
 
 SLOTS = {1: 6, 2: 12, 3: 12, 4: 20, 5: 20, 6: 25, 7: 25, 8: 35, 9: 40, 10: 35, 11: 30, 12: 14, 13: 26, 14: 25, 15: 30, 16: 15, 17: 25, 18: 30, 19: 15, 20: 15, 21: 25}
-LEADS = {1: 2.2, 2: 0.8, 3: 0.6, 4: 0.6, 5: 0.6, 6: 1.6, 7: 0.8, 8: 2.0, 9: 1.6, 10: 1.0, 11: 1.4, 12: 0.8, 13: 0.8, 14: 3.0, 15: 2.2, 16: 0.8, 17: 2.0, 18: 1.0, 19: 0.6, 20: 0.3, 21: 2.0}
-TAILS = {1: 0.4, 21: 6.5, 13: 1.5, 20: 3.0}
+# "tight" (default): each scene hugs its narration so the voice flows scene to scene (~6 min).
+# "slots": the original script slots (~8 min, long silent stretches) — the already-rendered Shorts were cut from this.
+TIMING_MODE = os.environ.get("EP_TIMING", "tight")
+if TIMING_MODE == "slots":
+    LEADS = {1: 2.2, 2: 0.8, 3: 0.6, 4: 0.6, 5: 0.6, 6: 1.6, 7: 0.8, 8: 2.0, 9: 1.6, 10: 1.0, 11: 1.4, 12: 0.8, 13: 0.8, 14: 3.0, 15: 2.2, 16: 0.8, 17: 2.0, 18: 1.0, 19: 0.6, 20: 0.3, 21: 2.0}
+    TAILS = {1: 0.4, 21: 6.5, 13: 1.5, 20: 3.0}
+else:
+    LEADS = {n: 0.35 for n in range(1, 22)}
+    LEADS.update({1: 2.2, 6: 0.8, 8: 0.8, 9: 0.6, 11: 0.6, 14: 1.5, 15: 0.8, 17: 0.8, 20: 0.3, 21: 0.8})
+    TAILS = {n: 0.35 for n in range(1, 22)}
+    TAILS.update({1: 0.3, 13: 0.8, 20: 1.6, 21: 5.0})
 
 
 def scene_dur(n):
     vo = TIMING[f"{n:02d}"]["dur"]
-    return max(SLOTS[n], LEADS[n] + vo + TAILS.get(n, 1.0))
+    if TIMING_MODE == "slots":
+        return max(SLOTS[n], LEADS[n] + vo + TAILS.get(n, 1.0))
+    return LEADS[n] + vo + TAILS[n]
 
 
 DURS = {n: round(scene_dur(n) * FPS) / FPS for n in range(1, 22)}
@@ -1253,7 +1264,7 @@ def sc21(t, f):
     f.o = O_SIEGE
     dk = kfl(t, [(0, 0.0), (dur, 0.85)])
     f.tod = (dk, 1 - dk, 0); f.sun = kfl(t, [(0, 0.85), (dur, 0.6)])
-    t_end = L + ph[3]
+    t_end = L + ph[4]
     rx = CX - 0.05 * CW
     f.zoom = kf(t, [(0, 1.5), (t_end - 1, 1.0)]); f.zf = (rx - f.o, roof_y(rx) - 0.4 * HERO)
 

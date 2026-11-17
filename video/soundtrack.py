@@ -492,7 +492,10 @@ def episode_mix(out_wav, out_srt):
     total = E.TOTAL
     vo = Bus(total); mus = Bus(total); fx = Bus(total)
     for n in range(1, 22):
-        vo.add(load_mp3(os.path.join(E.NARR, f"{n:02d}.mp3")), A[n] + E.LEADS[n], 1.0)
+        clip = load_mp3(os.path.join(E.NARR, f"{n:02d}.mp3"))
+        fi, fo = int(0.015 * SR), int(0.08 * SR)          # soften clip edges so scene-to-scene joins don't click
+        clip[:fi] *= np.linspace(0, 1, fi); clip[-fo:] *= np.linspace(1, 0, fo)
+        vo.add(clip, A[n] + E.LEADS[n], 1.0)
     # music cues
     drone(mus, 0, 2.3, 55, 0.35)
     day_theme(mus, 3.4, A[11] + 0.5, fade_out=2.0, gain=0.55)                                        # M1
@@ -514,8 +517,8 @@ def episode_mix(out_wav, out_srt):
     for t, nm, g, pan in evs:
         fx.add(SFX(nm), t, g, pan)
     v = vo.st(); m = mus.st(); x = fx.st()
-    m = duck(m, vo.L, 0.6)
-    mix = v * 1.0 + m / max(1e-9, np.max(np.abs(m))) * 0.32 + x / max(1e-9, np.max(np.abs(x))) * 0.5
+    m = duck(m, vo.L, 0.8)
+    mix = v * 1.0 + m / max(1e-9, np.max(np.abs(m))) * 0.13 + x / max(1e-9, np.max(np.abs(x))) * 0.38
     write_wav(out_wav, mix[: int(total * SR)])
     subtitles(out_srt)
     print("events", len(evs))
@@ -567,8 +570,8 @@ def short_mix(k, out_wav):
                 ph = E.vo_phr("17"); t_snap = E.LEADS[17] + ph[3] - 0.1
                 at = sq[0] + (t_snap - sq[3]) / sq[4] + 0.35 - (ph[3] - a)
         bus_v.add(sig, at, 1.0)
-    v = bus_v.st(); m = duck(mus.st(), bus_v.L, 0.55); x = fx.st()
-    mix = v + m / max(1e-9, np.max(np.abs(m))) * 0.4 + x / max(1e-9, np.max(np.abs(x))) * 0.55
+    v = bus_v.st(); m = duck(mus.st(), bus_v.L, 0.8); x = fx.st()
+    mix = v + m / max(1e-9, np.max(np.abs(m))) * 0.2 + x / max(1e-9, np.max(np.abs(x))) * 0.45
     write_wav(out_wav, mix[: int(total * SR)])
 
 
