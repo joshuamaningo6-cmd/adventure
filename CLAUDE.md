@@ -78,6 +78,13 @@ A 63K-subscriber stick-figure "what if" channel that launched in Oct 2026.
 5. Render the 5 Shorts natively at 1080×1920.
 6. Help Josh set up the Metricool schedule.
 
+## Status (17 Nov 2026, later the same day)
+
+- Channel name picked: **Red Scarf Tales** (@RedScarfTales). Setup kit in `channel/index.html`.
+- Josh approved ~5,960 ElevenLabs credits (~US$1.08). Episode 1 narration is recorded (`audio/narration/`, model `eleven_v4`, Mike voice).
+- Episode 1 is rendered (8:11), plus two native 9:16 timelapse Shorts (day build, night siege). See README.
+- Josh liked the 10 s teaser style and asked for timelapse-style Shorts.
+
 ## Ground rules
 
 - Keep every character and design original. No recognisable existing characters, logos or art.
