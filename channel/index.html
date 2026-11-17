@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Red Scarf Tales</title>
+<meta name="description" content="Everything needed to create the Red Scarf Tales YouTube channel: art, copy, playlists, defaults and the Episode 1 launch pack.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f8f4; --panel:#ffffff; --ink:#15141c; --muted:#5b6170; --line:#e1e5dc;
+  --scarf:#e22628; --scarf-ink:#ffffff; --leaf:#3f9a48; --sky:#2276d6; --gold:#f4b73a; --navy:#141a3c;
+  --code:#f1f3ee; --shadow:0 1px 2px rgba(0,0,0,.05),0 6px 20px rgba(0,0,0,.06);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f1220; --panel:#171b2e; --ink:#eef0f6; --muted:#9aa2b8; --line:#272d45;
+    --code:#1e2338; --leaf:#6cc66f; --sky:#6aa8ff; --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f1220; --panel:#171b2e; --ink:#eef0f6; --muted:#9aa2b8; --line:#272d45;
+  --code:#1e2338; --leaf:#6cc66f; --sky:#6aa8ff; --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.55 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--sky)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 16px}
+header.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 0}
+.brand{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:-.01em}
+.brand img{width:34px;height:34px;border-radius:50%}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--panel);color:var(--ink);
+  border-radius:999px;padding:7px 14px;font:600 14px Inter,sans-serif;cursor:pointer;text-decoration:none}
+.btn:hover{border-color:var(--muted)}
+.btn.primary{background:var(--scarf);border-color:var(--scarf);color:var(--scarf-ink)}
+.btn.small{padding:4px 10px;font-size:13px}
+
+/* channel mock */
+.mock{background:var(--panel);border-radius:20px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--line)}
+.banner{aspect-ratio:2560/423;background:url(art/banner_2560x1440.png) center/cover;}
+.ch{display:flex;gap:20px;align-items:center;padding:20px 24px 8px;flex-wrap:wrap}
+.ch img{width:120px;height:120px;border-radius:50%;border:4px solid var(--panel);flex:none}
+.ch h1{margin:0;font-size:clamp(26px,4vw,36px);font-weight:900;letter-spacing:-.02em}
+.ch .meta{color:var(--muted);font-size:14px}
+.ch .tag{margin:4px 0 0;color:var(--muted);max-width:560px}
+.tabs{display:flex;gap:22px;padding:8px 24px 0;border-bottom:1px solid var(--line);overflow-x:auto}
+.tabs span{padding:10px 0;font-weight:600;color:var(--muted);white-space:nowrap}
+.tabs span.on{color:var(--ink);border-bottom:3px solid var(--ink)}
+.feature{display:grid;grid-template-columns:minmax(0,1fr) 220px;gap:24px;padding:24px}
+.feature video{width:100%;border-radius:12px;background:#000;display:block}
+.feature h3{margin:12px 0 4px;font-size:18px}
+.phone{width:100%;max-width:220px;aspect-ratio:9/16;border-radius:22px;overflow:hidden;background:#000;border:6px solid #111;justify-self:center}
+.phone video{width:100%;height:100%;object-fit:cover;border-radius:0}
+.cap{font-size:13px;color:var(--muted);margin-top:6px;text-align:center}
+
+/* steps */
+h2{font-size:24px;letter-spacing:-.02em;margin:48px 0 6px}
+.lede{color:var(--muted);margin:0 0 18px;max-width:720px}
+.progress{height:8px;background:var(--line);border-radius:99px;overflow:hidden;margin:6px 0 20px}
+.progress i{display:block;height:100%;width:0;background:var(--leaf);transition:width .3s}
+.step{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin-bottom:12px;box-shadow:var(--shadow)}
+.step > label{display:flex;gap:12px;align-items:flex-start;cursor:pointer}
+.step input[type=checkbox]{width:22px;height:22px;accent-color:var(--leaf);flex:none;margin-top:2px}
+.step h3{margin:0;font-size:17px}
+.step .where{color:var(--muted);font-size:14px;margin:2px 0 0}
+.step.done h3{text-decoration:line-through;color:var(--muted)}
+.body{margin:12px 0 0 34px}
+.field{margin-top:10px}
+.field .head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:4px}
+.field .head b{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.field .count{font-size:12px;color:var(--muted)}
+pre{margin:0;background:var(--code);border:1px solid var(--line);border-radius:10px;padding:12px 14px;white-space:pre-wrap;word-wrap:break-word;font:14px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--ink)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.art{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.art img{border-radius:10px;border:1px solid var(--line);max-width:100%}
+ul.tight{margin:6px 0 0;padding-left:20px}
+ul.tight li{margin:3px 0}
+.swatches{display:flex;gap:10px;flex-wrap:wrap}
+.sw{display:flex;align-items:center;gap:8px;font-size:13px;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:4px 12px 4px 4px}
+.sw i{width:24px;height:24px;border-radius:50%;display:block;border:1px solid rgba(0,0,0,.1)}
+.note{border-left:4px solid var(--gold);padding:10px 14px;background:var(--panel);border-radius:0 10px 10px 0;color:var(--muted);font-size:14px;margin:12px 0}
+footer{color:var(--muted);font-size:13px;padding:40px 0 60px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(30px);opacity:0;background:var(--ink);color:var(--bg);padding:8px 16px;border-radius:999px;font-weight:600;transition:.2s;pointer-events:none}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+@media (max-width:720px){
+  .feature{grid-template-columns:1fr;padding:16px}
+  .ch{padding:16px}
+  .ch img{width:80px;height:80px}
+  .body{margin-left:0}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand"><img src="art/avatar_800x800.png" alt="">Channel setup kit</div>
+    <button class="btn small" id="theme">Toggle theme</button>
+  </header>
+
+  <!-- Channel preview -->
+  <section class="mock" aria-label="Channel preview">
+    <div class="banner" role="img" aria-label="Channel banner"></div>
+    <div class="ch">
+      <img src="art/avatar_800x800.png" alt="Channel avatar: the red-scarf hero">
+      <div style="flex:1;min-width:220px">
+        <h1>Red Scarf Tales</h1>
+        <div class="meta">@RedScarfTales · New channel · 1 video</div>
+        <p class="tag">What if…? Animated adventures in a painted fantasy world. One question, one hero, one red scarf.</p>
+      </div>
+      <a class="btn primary" href="https://studio.youtube.com" target="_blank" rel="noopener">Open YouTube Studio</a>
+    </div>
+    <div class="tabs"><span class="on">Home</span><span>Videos</span><span>Shorts</span><span>Playlists</span><span>Community</span></div>
+    <div class="feature">
+      <div>
+        <video src="../video/out/ep01_teaser_10s_16x9.mp4" controls playsinline preload="metadata" poster="art/banner_2560x1440.png"></video>
+        <h3>What If You Had 10 Hours to Build a Zombie-Proof Home?</h3>
+        <div class="cap" style="text-align:left">10-second YouTube teaser (16:9). Use it as the channel trailer until the full episode is out.</div>
+      </div>
+      <div>
+        <div class="phone"><video src="../video/out/ep01_reel_10s_9x16.mp4" controls playsinline loop preload="metadata"></video></div>
+        <div class="cap">10 s Reel / Short, native 9:16</div>
+      </div>
+    </div>
+  </section>
+
+  <h2>Create the channel</h2>
+  <p class="lede">Work top to bottom. Tick each step as you go (ticks are saved in this browser). Every text box has a copy button and fits YouTube's limits.</p>
+  <div class="progress" aria-hidden="true"><i id="bar"></i></div>
+
+  <div id="steps">
+
+  <div class="step" data-id="create">
+    <label><input type="checkbox"><div><h3>1. Create the channel</h3><p class="where">youtube.com → profile picture → <b>Create a channel</b>. Use a Brand Account if anyone else will help you manage it.</p></div></label>
+    <div class="body grid2">
+      <div class="field"><div class="head"><b>Name</b><button class="btn small" data-copy="name">Copy</button></div><pre id="name">Red Scarf Tales</pre></div>
+      <div class="field"><div class="head"><b>Handle</b><button class="btn small" data-copy="handle">Copy</button></div><pre id="handle">@RedScarfTales</pre></div>
+    </div>
+    <div class="body">
+      <div class="note">If the handle is taken, try these in order: <b>@RedScarfWhatIf</b>, <b>@TheRedScarfTales</b>, <b>@RedScarfAdventures</b>. Change the name everywhere on this page with the box below and the copy boxes update to match.</div>
+      <div class="field"><div class="head"><b>Use a different name</b></div>
+        <input id="rename" type="text" value="Red Scarf Tales" style="width:100%;max-width:360px;padding:8px 12px;border-radius:10px;border:1px solid var(--line);background:var(--code);color:var(--ink);font:15px Inter,sans-serif">
+      </div>
+    </div>
+  </div>
+
+  <div class="step" data-id="art">
+    <label><input type="checkbox"><div><h3>2. Upload the profile picture and banner</h3><p class="where">YouTube Studio → <b>Customisation</b> → <b>Profile</b>.</p></div></label>
+    <div class="body">
+      <div class="art">
+        <a href="art/avatar_800x800.png" download><img src="art/avatar_800x800.png" width="120" height="120" alt="Avatar"></a>
+        <a href="art/banner_2560x1440.png" download><img src="art/banner_2560x1440.png" width="384" alt="Banner"></a>
+      </div>
+      <ul class="tight">
+        <li><a href="art/avatar_800x800.png" download>avatar_800x800.png</a>: picture, 800×800 (YouTube shows it as a circle).</li>
+        <li><a href="art/banner_2560x1440.png" download>banner_2560x1440.png</a>: banner, 2560×1440. The title and hero sit inside the 1546×423 area that shows on every device (<a href="art/banner_safe_area_check.png">safe-area check</a>).</li>
+        <li><b>Video watermark</b>: use the avatar as well, shown for the entire video.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="step" data-id="desc">
+    <label><input type="checkbox"><div><h3>3. Description and links</h3><p class="where">Customisation → <b>Profile</b> → Description, Links, Contact info.</p></div></label>
+    <div class="body">
+      <div class="field"><div class="head"><b>Description</b><span class="count" id="desc-count"></span><button class="btn small" data-copy="desc">Copy</button></div>
+<pre id="desc">What if… you woke up with ten hours to build a zombie-proof home? What if the floating islands were close enough to reach? What if the ruins were still guarding something?
+
+Red Scarf Tales is an animated adventure series. Every episode starts with one question and drops YOU into a bright, painted fantasy world to answer it. Follow the stick-figure hero in the red scarf as he crafts, builds, explores and survives across the Grasslands Chase, the Floating Islands, the Ancient Ruins and Skyfarer's Dusk.
+
+🎬 Full episodes here on YouTube
+📱 Short stand-alone what-ifs on Shorts, Reels and TikTok
+
+Got a what-if of your own? Drop it in the comments. It might become the next episode.</pre></div>
+      <div class="grid2">
+        <div class="field"><div class="head"><b>Links</b></div><pre>Instagram → your profile URL
+TikTok → your profile URL
+Facebook → your page URL</pre></div>
+        <div class="field"><div class="head"><b>Contact email</b></div><pre>A business inbox (not your personal one)</pre></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step" data-id="keywords">
+    <label><input type="checkbox"><div><h3>4. Channel keywords and country</h3><p class="where">Studio → <b>Settings</b> → <b>Channel</b> → Basic info.</p></div></label>
+    <div class="body">
+      <div class="field"><div class="head"><b>Keywords</b><button class="btn small" data-copy="kw">Copy</button></div>
+<pre id="kw">"what if" "what if animation" "red scarf tales" "stick figure animation" "fantasy adventure" "survival animation" "animated story" "zombie survival" "floating islands" "building from scratch"</pre></div>
+      <p class="where" style="margin-top:8px">Also in Settings → Channel → Advanced settings: set the audience to <b>No, it's not made for kids</b> (the night scenes are spooky and comments matter for this format).</p>
+    </div>
+  </div>
+
+  <div class="step" data-id="playlists">
+    <label><input type="checkbox"><div><h3>5. Create the playlists</h3><p class="where">Studio → <b>Content</b> → <b>Playlists</b> → New playlist. One per world, plus a series list. Series and sequels are what kept similar channels growing.</p></div></label>
+    <div class="body grid2">
+      <div class="field"><div class="head"><b>Grasslands Chase</b><button class="btn small" data-copy="p1">Copy</button></div><pre id="p1">Grasslands Chase: survival what-ifs in the sunny meadow, where the zombies only come out at night.</pre></div>
+      <div class="field"><div class="head"><b>Floating Islands</b><button class="btn small" data-copy="p2">Copy</button></div><pre id="p2">Floating Islands: what-ifs high above the clouds, where one wrong step is a very long fall.</pre></div>
+      <div class="field"><div class="head"><b>Ancient Ruins</b><button class="btn small" data-copy="p3">Copy</button></div><pre id="p3">Ancient Ruins: what-ifs among forgotten temples, glowing plants and traps that still work.</pre></div>
+      <div class="field"><div class="head"><b>Skyfarer's Dusk</b><button class="btn small" data-copy="p4">Copy</button></div><pre id="p4">Skyfarer's Dusk: golden-hour what-ifs with airships, sky ports and the edge of the world.</pre></div>
+      <div class="field"><div class="head"><b>Every night, bigger</b><button class="btn small" data-copy="p5">Copy</button></div><pre id="p5">Night 1, Night 2, Night 3… One fortress, one red scarf, and zombies that come back bigger every sunset. Watch in order.</pre></div>
+    </div>
+  </div>
+
+  <div class="step" data-id="defaults">
+    <label><input type="checkbox"><div><h3>6. Upload defaults</h3><p class="where">Studio → <b>Settings</b> → <b>Upload defaults</b>. Saves retyping for every video.</p></div></label>
+    <div class="body">
+      <div class="field"><div class="head"><b>Default description (bottom half)</b><button class="btn small" data-copy="defdesc">Copy</button></div>
+<pre id="defdesc">What would YOU do? Tell me in the comments 👇
+
+New what-if adventures from Red Scarf Tales. Subscribe so you don't miss the next one.
+
+#whatif #animation #redscarftales</pre></div>
+      <div class="field"><div class="head"><b>Default tags</b><button class="btn small" data-copy="deftags">Copy</button></div>
+<pre id="deftags">what if, what if animation, red scarf tales, stick figure animation, animated story, fantasy adventure</pre></div>
+      <ul class="tight"><li>Category: <b>Film &amp; Animation</b></li><li>Comments: <b>Allow all</b> (the question at the end of each video needs them)</li><li>Licence: Standard YouTube licence</li></ul>
+    </div>
+  </div>
+
+  <div class="step" data-id="layout">
+    <label><input type="checkbox"><div><h3>7. Home page layout</h3><p class="where">Customisation → <b>Layout</b>.</p></div></label>
+    <div class="body">
+      <ul class="tight">
+        <li><b>Channel trailer (non-subscribers):</b> the 10-second teaser below for now. Swap in the full Episode 1 once it's out.</li>
+        <li><b>Featured video (returning subscribers):</b> the latest full episode.</li>
+        <li><b>Sections:</b> Shorts → Grasslands Chase → Every night, bigger → Popular uploads.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="step" data-id="ep1">
+    <label><input type="checkbox"><div><h3>8. Upload the 10-second teaser and the Reel</h3><p class="where">Both stand on their own. The 9:16 one goes up as a Short and goes to IG, TikTok and FB through Metricool.</p></div></label>
+    <div class="body">
+      <div class="grid2">
+        <div class="field"><div class="head"><b>Teaser title (YouTube)</b><button class="btn small" data-copy="t1">Copy</button></div><pre id="t1">What If You Had 10 Hours to Build a Zombie-Proof Home?</pre></div>
+        <div class="field"><div class="head"><b>Short title</b><button class="btn small" data-copy="t2">Copy</button></div><pre id="t2">You have 10 hours before the zombies come. What do you build? #shorts</pre></div>
+      </div>
+      <div class="field"><div class="head"><b>Reel caption (IG / TikTok / FB)</b><button class="btn small" data-copy="t3">Copy</button></div>
+<pre id="t3">Zombies come at sunset. You have 10 hours and bare hands. 🪓🏠
+
+What would you build first? 👇
+
+#whatif #zombies #survival #animation #stickfigure #redscarftales</pre></div>
+      <ul class="tight">
+        <li><a href="../video/out/ep01_teaser_10s_16x9.mp4" download>ep01_teaser_10s_16x9.mp4</a>: 1920×1080, 30 fps, 10 s</li>
+        <li><a href="../video/out/ep01_reel_10s_9x16.mp4" download>ep01_reel_10s_9x16.mp4</a>: 1080×1920, 30 fps, 10 s, full bleed with captions inside the safe zone</li>
+        <li>Full Episode 1 script: <code>scripts/ep01_script.md</code></li>
+      </ul>
+    </div>
+  </div>
+
+  </div>
+
+  <h2>Brand at a glance</h2>
+  <p class="lede">Keep the red scarf the only red in most shots, so viewers spot the hero instantly.</p>
+  <div class="swatches">
+    <span class="sw"><i style="background:#e22628"></i>Scarf red #E22628</span>
+    <span class="sw"><i style="background:#0e0d14"></i>Hero ink #0E0D14</span>
+    <span class="sw"><i style="background:#76c448"></i>Meadow #76C448</span>
+    <span class="sw"><i style="background:#2276d6"></i>Day sky #2276D6</span>
+    <span class="sw"><i style="background:#ffc478"></i>Golden hour #FFC478</span>
+    <span class="sw"><i style="background:#141a3c"></i>Night navy #141A3C</span>
+    <span class="sw"><i style="background:#ffa832"></i>Zombie eyes #FFA832</span>
+    <span class="sw"><i style="background:#6eff6e"></i>Title green #6EFF6E</span>
+  </div>
+  <p class="where" style="color:var(--muted);margin-top:12px">Type: Inter Black for titles and captions (white, dark outline). Captions on Shorts: 2–3 words at a time, kept out of the top 10%, the bottom 20% and the right 15%.</p>
+
+  <footer>Art and video are rendered by <code>video/teaser.py</code> (banner and avatar: <code>python3 video/teaser.py banner channel/art</code>).</footer>
+</div>
+<div class="toast" id="toast">Copied</div>
+<script>
+(function(){
+  var store = {get:function(k){try{return localStorage.getItem(k)}catch(e){return null}}, set:function(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+  // theme
+  var root=document.documentElement, t=store.get('rst-theme'); if(t) root.setAttribute('data-theme',t);
+  document.getElementById('theme').onclick=function(){
+    var dark = root.getAttribute('data-theme') ? root.getAttribute('data-theme')==='dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+    var n = dark?'light':'dark'; root.setAttribute('data-theme',n); store.set('rst-theme',n);
+  };
+  // checklist
+  var steps=[].slice.call(document.querySelectorAll('.step')), bar=document.getElementById('bar');
+  function upd(){var d=0; steps.forEach(function(s){var c=s.querySelector('input[type=checkbox]').checked; s.classList.toggle('done',c); if(c)d++;}); bar.style.width=(100*d/steps.length)+'%';}
+  steps.forEach(function(s){var cb=s.querySelector('input[type=checkbox]'), k='rst-step-'+s.dataset.id; cb.checked=store.get(k)==='1';
+    cb.addEventListener('change',function(){store.set(k,cb.checked?'1':'0');upd();});});
+  upd();
+  // copy
+  var toast=document.getElementById('toast');
+  function show(msg){toast.textContent=msg;toast.classList.add('on');clearTimeout(show.t);show.t=setTimeout(function(){toast.classList.remove('on')},1200);}
+  document.querySelectorAll('[data-copy]').forEach(function(b){b.addEventListener('click',function(e){e.preventDefault();
+    var txt=document.getElementById(b.dataset.copy).textContent;
+    (navigator.clipboard?navigator.clipboard.writeText(txt):Promise.reject()).then(function(){show('Copied')},function(){
+      var ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');show('Copied')}catch(x){show('Select and copy manually')}ta.remove();});
+  });});
+  // description length
+  var desc=document.getElementById('desc'); function cnt(){document.getElementById('desc-count').textContent=desc.textContent.length+' / 1000';} cnt();
+  // rename everywhere
+  var orig={}; ['name','handle','desc','kw','defdesc','deftags','t3'].forEach(function(id){orig[id]=document.getElementById(id).textContent;});
+  var rn=document.getElementById('rename');
+  function apply(v){v=(v||'').trim()||'Red Scarf Tales';
+    var handle='@'+v.replace(/[^A-Za-z0-9]/g,''), tagl=v.toLowerCase(), hash='#'+v.toLowerCase().replace(/[^a-z0-9]/g,'');
+    Object.keys(orig).forEach(function(id){document.getElementById(id).textContent=orig[id]
+      .replace(/@RedScarfTales/g,handle).replace(/Red Scarf Tales/g,v).replace(/red scarf tales/g,tagl).replace(/#redscarftales/g,hash);});
+    document.getElementById('name').textContent=v; document.getElementById('handle').textContent=handle;
+    document.querySelector('.ch h1').textContent=v; document.querySelector('.ch .meta').textContent=handle+' · New channel · 1 video'; cnt();}
+  var saved=store.get('rst-name'); if(saved){rn.value=saved;apply(saved);}
+  rn.addEventListener('input',function(){store.set('rst-name',rn.value);apply(rn.value);});
+})();
+</script>
+</body>
+</html>
