@@ -14,7 +14,7 @@
 | `video/soundtrack.py` | Music cues (day, golden hour, siege, sunrise), SFX timed from the choreography, ducking under the voice, subtitles |
 | `audio/narration/` | ElevenLabs "Mike" narration, one MP3 per scene (`timing.json` has the pauses) |
 | `video/out/ep01/` | `ep01_what_if_10_hours_web.mp4` (6:08, 1080p, web encode), `ep01_captions.srt`, `ep01_thumbnail.png`. The full-quality master (206 MB) is too big for GitHub and is git-ignored. |
-| `video/out/shorts/` | `ep01_short1_10_hours_in_55s_9x16.mp4` (day timelapse), `ep01_short2_surviving_night_one_9x16.mp4` (night timelapse), both 1080×1920 |
+| `video/out/shorts/` | `ep01_short1_10_hours_9x16.mp4` (58 s story: chase, rewind, gags, build, sunset), `ep01_short2_the_vine_rope_9x16.mp4` (59 s story: siege, Brute, rope snap, boulder, sunrise), both 1080×1920 |
 | `code/`, `reference/`, `media/` | The original handover pack |
 
 ## Re-render
